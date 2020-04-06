@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,13 +18,22 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+Route::get('/parametres', function () {
+    return view('parametres.parametres');
+});
+
 Auth::routes();
 
+
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/users/updat', function () {
-    return view('utilisateurs.update');
-});
+
 Route::resource('/users','UserController');
+
+Route::put('users/updat', 'UserController@updat')->name('users.updat');
+
 Route::resource('/interventions','InterventionController');
+
+Route::get('user/{us}', 'UserController@delete')->name('user.delete');
+
 
 

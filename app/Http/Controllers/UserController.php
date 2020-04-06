@@ -21,7 +21,7 @@ class UserController extends Controller
         $data=Http::get('http://localhost:8002/Users');
 
         $resp=json_decode($data);
-        
+
 
             return view('utilisateurs.liste',[
             'users' => $resp
@@ -42,12 +42,6 @@ class UserController extends Controller
         //
     }
 
-    public function update($id)
-    {
-        dd('ok');
-    }
-
-
     /**
      * Store a newly created resource in storage.
      *
@@ -56,8 +50,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        dd('ok');
-    }
+       }
 
     /**
      * Display the specified resource.
@@ -67,8 +60,14 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
-    }
+        $data=Http::get('http://localhost:8002/Users/FindByID/'.$id);
+        $use=json_decode($data);
+        $user=$use[0];
+        
+            
+        return view ('utilisateurs.details', [ 'user' => $user ]);   
+
+     }
 
     /**
      * Show the form for editing the specified resource.
@@ -78,7 +77,11 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-            
+        $data=Http::get('http://localhost:8002/Users/FindByID/'.$id);
+        $user=json_decode($data);
+        
+
+        return view ('utilisateurs.update', [ 'user' => $user ]);
 
     }
 
@@ -91,7 +94,45 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+/*
+        try{
+        $data=Http::get('http://localhost:8002/Users/FindByID/'.$id);
+        $use=json_decode($data);
+        $user=$use[0];
+        if(!$user){ 
+            return $this->notFound('user introuvable');
+        }
+
+
+
+        $data=array('post' =>$request->input());
+        $str=http_build_query($data);
+        $ch= curl_init();
+
+        curl_setopt($ch, CURLOPT_URL,"http://localhost:8002/Users/update");
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$str);
+        
+        $output = curl_exec($ch);
+        
+        dd($output);
+
+
+      
+      return view('home');
+
+
+        
+    }catch(\Exception $e){
+echo $e;
+
+    }
+
+
+        
+*/
     }
 
     /**
@@ -101,7 +142,76 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        //
+    {   /*
+
+        $dat=Http::get('http://localhost:8002/Users');
+
+        $resp=json_decode($dat);
+
+        $data=Http::get('http://localhost:8002/Users/DestroyByID/'.$id);
+
+        $user=json_decode($data);
+        
+
+        return view ('home', [ 'user' => $resp]);   
+*/
     }
+
+
+    public function delete($id)
+    {   
+        $dat=Http::get('http://localhost:8002/Users');
+
+        $resp=json_decode($dat);
+
+        $data=Http::get('http://localhost:8002/Users/DestroyByID/'.$id);
+
+        $user=json_decode($data);
+
+        
+
+        return view('utilisateurs.liste',[
+            'users' => $resp
+
+
+        ]); 
+
+    }
+
+
+
+
+    public function updat(Request $request)
+    {
+/*
+     
+        $data=array('post' =>$request->input());
+        $str=http_build_query($data);
+        $ch= curl_init();
+
+        curl_setopt($ch, CURLOPT_URL,"http://localhost:8002/Users/update");
+        curl_setopt($ch, CURLOPT_POST,1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,$str);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+        
+        $output = curl_exec($ch);
+        
+        dd($output);
+
+
+      
+      return view('home');
+*/
+
+
+        
+    }
+
+        
+
+    
+
+
+
+    
 }
